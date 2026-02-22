@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    container_name: trampo_aqui_db
+    environment:
+      POSTGRES_USER: trampo_aqui
+      POSTGRES_PASSWORD: trampo_aqui
+      POSTGRES_DB: trampo_aqui
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data: 
