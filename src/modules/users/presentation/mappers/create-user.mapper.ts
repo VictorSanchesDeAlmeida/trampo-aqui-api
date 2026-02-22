@@ -9,6 +9,8 @@ export class UserMapper {
       randomUUID(),
       dto.name,
       dto.email,
+      dto.document,
+      dto.birthDate,
       dto.password,
       dto.roleId,
       new Date(),

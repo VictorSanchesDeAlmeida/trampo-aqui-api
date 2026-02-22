@@ -3,6 +3,8 @@ CREATE TABLE "User" (
     "id" UUID NOT NULL,
     "email" VARCHAR(255) NOT NULL,
     "name" VARCHAR(255) NOT NULL,
+    "document" VARCHAR(255) NOT NULL,
+    "birthDate" DATE NOT NULL,
     "password" VARCHAR(50) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "roleId" INTEGER NOT NULL,
@@ -51,6 +53,9 @@ CREATE TABLE "Courses" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_document_key" ON "User"("document");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Roles_name_key" ON "Roles"("name");

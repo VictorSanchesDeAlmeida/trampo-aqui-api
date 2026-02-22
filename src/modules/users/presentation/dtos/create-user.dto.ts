@@ -1,4 +1,5 @@
 import {
+  IsDateString,
   IsEmail,
   IsInt,
   IsNotEmpty,
@@ -16,6 +17,15 @@ export class CreateUserDto {
   @IsNotEmpty({ message: 'Email is required' })
   @IsEmail({}, { message: 'Invalid email format' })
   email: string;
+
+  @IsNotEmpty({ message: 'Document is required' })
+  @IsString({ message: 'Document must be a string' })
+  @MinLength(11, { message: 'Document must have at least 11 characters' })
+  document: string;
+
+  @IsNotEmpty({ message: 'Birth date is required' })
+  @IsDateString({}, { message: 'Birth date must be a valid date string' })
+  birthDate: Date;
 
   @IsNotEmpty({ message: 'Password is required' })
   @IsString({ message: 'Password must be a string' })

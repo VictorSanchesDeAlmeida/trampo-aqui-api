@@ -5,11 +5,15 @@ export class User {
   private _email: string;
   private _password: string;
   private _role: number;
+  private _document: string;
+  private _birthDate: Date;
 
   constructor(
     public readonly id: string,
     name: string,
     email: string,
+    document: string,
+    birthDate: Date,
     password: string,
     role: number,
     public readonly createdAt: Date = new Date(),
@@ -18,6 +22,8 @@ export class User {
     this.setEmail(email);
     this.setPassword(password);
     this.setRole(role);
+    this.setDocument(document);
+    this.setBirthDate(birthDate);
   }
 
   get name() {
@@ -34,6 +40,14 @@ export class User {
 
   get password() {
     return this._password;
+  }
+
+  get document() {
+    return this._document;
+  }
+
+  get birthDate() {
+    return this._birthDate;
   }
 
   setName(name: string) {
@@ -74,5 +88,27 @@ export class User {
       });
     }
     this._password = password;
+  }
+
+  setDocument(document: string) {
+    if (!document || document.length < 11) {
+      throw new AppError({
+        message: 'Document must have at least 11 characters',
+        statusCode: 400,
+      });
+    }
+    this._document = document;
+  }
+
+  setBirthDate(birthDate: Date) {
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    if (age < 18) {
+      throw new AppError({
+        message: 'User must be at least 18 years old',
+        statusCode: 400,
+      });
+    }
+    this._birthDate = birthDate;
   }
 }

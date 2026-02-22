@@ -15,6 +15,20 @@ async function main() {
     data: [{ name: 'Admin' }, { name: 'User' }, { name: 'Company' }],
     skipDuplicates: true,
   });
+
+  await prisma.user.createMany({
+    data: [
+      {
+        name: 'Admin User',
+        email: 'admin@admin.com',
+        document: '12345678900',
+        birthDate: new Date('1990-01-01'),
+        password: 'admin123',
+        roleId: 1,
+      },
+    ],
+    skipDuplicates: true,
+  });
 }
 
 main()
