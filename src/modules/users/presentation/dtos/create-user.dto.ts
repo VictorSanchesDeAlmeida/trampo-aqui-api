@@ -25,7 +25,7 @@ export class CreateUserDto {
 
   @IsNotEmpty({ message: 'Birth date is required' })
   @IsDateString({}, { message: 'Birth date must be a valid date string' })
-  birthDate: Date;
+  birthDate: string;
 
   @IsNotEmpty({ message: 'Password is required' })
   @IsString({ message: 'Password must be a string' })

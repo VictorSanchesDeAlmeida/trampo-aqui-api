@@ -10,7 +10,7 @@ export class UserMapper {
       dto.name,
       dto.email,
       dto.document,
-      dto.birthDate,
+      new Date(dto.birthDate),
       dto.password,
       dto.roleId,
       new Date(),
