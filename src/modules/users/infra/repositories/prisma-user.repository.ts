@@ -96,4 +96,25 @@ export class PrismaUserRepository implements UserRepository {
       });
     }
   }
+
+  async update(user: User): Promise<void> {
+    try {
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: {
+          name: user.name,
+          email: user.email,
+          document: user.document,
+          birthDate: user.birthDate,
+          password: user.password,
+          roleId: user.role,
+        },
+      });
+    } catch {
+      throw new AppError({
+        message: 'Failed to update user',
+        statusCode: 500,
+      });
+    }
+  }
 }

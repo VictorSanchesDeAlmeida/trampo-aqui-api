@@ -36,15 +36,15 @@ export class AuthGuard implements CanActivate {
       const decoded = await this.jwtService.verifyAsync<{ userId: string }>(
         token,
       );
-
       request['user'] = decoded; // Attach the decoded token to the request object
+
+      return true;
     } catch {
       throw new AppError({
         statusCode: 401,
         message: 'Invalid token',
       });
     }
-    return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

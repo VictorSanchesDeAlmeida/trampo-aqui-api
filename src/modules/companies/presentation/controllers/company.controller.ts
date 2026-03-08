@@ -11,15 +11,15 @@ export class CompanyController {
   constructor(private readonly createCompanyUseCase: CreateCompanyUseCase) {}
 
   @Post()
-  @Roles(UserRole.USER, UserRole.ADMIN)
+  @Roles(UserRole.ADMIN, UserRole.USER)
   async createCompany(@Body() createCompanyDto: CreateCompanyDto) {
     const newCompany = CreateCompanyMapper.toEntity(createCompanyDto);
-    await this.createCompanyUseCase.execute(newCompany);
+    const createdCompany = await this.createCompanyUseCase.execute(newCompany);
 
     return new AppResponse({
       message: 'Company created successfully',
       statusCode: 201,
-      data: null,
+      data: createdCompany,
     });
   }
 }

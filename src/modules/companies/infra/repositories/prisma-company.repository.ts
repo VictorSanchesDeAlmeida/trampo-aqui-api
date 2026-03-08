@@ -160,27 +160,23 @@ export class PrismaCompanyRepository implements CompanyRepository {
     }
   }
 
-  async findByUserId(
-    userId: string,
-    page: number,
-    limit: number,
-  ): Promise<Company[]> {
+  async findByUserId(userId: string): Promise<Company | null> {
     try {
-      const companies = await this.prisma.companies.findMany({
+      const company = await this.prisma.companies.findFirst({
         where: { userId },
-        skip: (page - 1) * limit,
-        take: limit,
         include: { user: true },
       });
 
-      return companies.map((company) => {
-        return new Company(
-          company.id,
-          company.name,
-          company.document,
-          company.userId,
-        );
-      });
+      if (!company) {
+        return null;
+      }
+
+      return new Company(
+        company?.id,
+        company?.name,
+        company?.document,
+        company?.userId,
+      );
     } catch {
       throw new AppError({
         message: 'Database connection error',

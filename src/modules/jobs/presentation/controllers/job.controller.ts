@@ -18,7 +18,7 @@ export class JobController {
   ) {}
 
   @Post()
-  @Roles(UserRole.COMPANY)
+  @Roles(UserRole.COMPANY, UserRole.ADMIN)
   async createJob(@Body() createJobDto: CreateJobDto) {
     const newJob = CreateJobMapper.toEntity(createJobDto);
     await this.createJobUseCase.execute(newJob);
@@ -79,7 +79,9 @@ export class JobController {
           page: pageNumber,
           limit: limitNumber,
           total: totalJobs,
-          totalPages: totalJobs ? Math.ceil(totalJobs / limitNumber) : undefined,
+          totalPages: totalJobs
+            ? Math.ceil(totalJobs / limitNumber)
+            : undefined,
         },
       },
     });

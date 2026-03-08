@@ -353,7 +353,7 @@ Cadastra novo usuário no sistema.
 ### POST `/companies`
 
 > **Auth**: ⚠️ Requer token JWT  
-> **Roles**: 👤 USER, 🔧 ADMIN
+> **Roles**: 👤 COMPANY, 🔧 ADMIN
 
 Cadastra nova empresa associada ao usuário autenticado.
 

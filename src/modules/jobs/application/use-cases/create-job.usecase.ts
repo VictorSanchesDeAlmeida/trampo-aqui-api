@@ -12,7 +12,6 @@ export class CreateJobUseCase {
   ) {}
 
   async execute(job: Job): Promise<void> {
-    // Verificar se a empresa existe
     const company = await this.companyRepository.findById(job.companyId);
 
     if (!company) {

@@ -11,13 +11,21 @@ export class CreateCompanyUseCase {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(company: Company): Promise<void> {
+  async execute(company: Company) {
     const user = await this.userRepository.findById(company.userId);
 
     if (!user) {
       throw new AppError({
         message: 'User not found',
         statusCode: 404,
+      });
+    }
+
+    // Verificar se o usuário tem role USER (2) ou ADMIN (1)
+    if (user.role !== 2 && user.role !== 1) {
+      throw new AppError({
+        message: 'Only users with USER or ADMIN role can create companies',
+        statusCode: 403,
       });
     }
 
@@ -32,6 +40,15 @@ export class CreateCompanyUseCase {
       });
     }
 
+    // Criar a empresa primeiro
     await this.companyRepository.create(company);
+
+    // Se o usuário era USER (2), alterar para COMPANY (3)
+    if (user.role === 2) {
+      user.setRole(3);
+      await this.userRepository.update(user);
+    }
+
+    return company;
   }
 }

@@ -9,7 +9,7 @@ import { User } from 'src/modules/users/domain/entities/user.entity';
 
 interface AuthenticatedRequest extends Request {
   user?: {
-    userId: string;
+    sub: string;
     role?: UserRole;
     fullUser?: User;
   };
@@ -39,6 +39,8 @@ export class RoleGuard implements CanActivate {
       [context.getHandler(), context.getClass()],
     );
 
+    console.log(requiredRoles);
+
     // Se não há roles específicos definidos, permitir acesso (já passou pelo AuthGuard)
     if (!requiredRoles) {
       return true;
@@ -47,7 +49,7 @@ export class RoleGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const user = request.user;
 
-    if (!user || !user.userId) {
+    if (!user || !user.sub) {
       throw new AppError({
         statusCode: 401,
         message: 'User not authenticated',
@@ -56,7 +58,7 @@ export class RoleGuard implements CanActivate {
 
     try {
       // Buscar as informações completas do usuário, incluindo o role
-      const fullUser = await this.userRepository.findById(user.userId);
+      const fullUser = await this.userRepository.findById(user.sub);
 
       if (!fullUser) {
         throw new AppError({

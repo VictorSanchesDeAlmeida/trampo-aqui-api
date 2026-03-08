@@ -3,12 +3,14 @@ import { UserRepository } from 'src/modules/users/domain/repositories/user.repos
 import { JwtService } from '@nestjs/jwt';
 import { AppError } from 'src/common/response/app.error';
 import * as bcrypt from 'bcryptjs';
+import { CompanyRepository } from 'src/modules/companies/domain/repositories/company.repository';
 
 @Injectable()
 export class LoginUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly jwtService: JwtService,
+    private readonly companyRepository: CompanyRepository,
   ) {}
 
   async execute(email: string, password: string) {
@@ -30,6 +32,8 @@ export class LoginUseCase {
       });
     }
 
+    const company = await this.companyRepository.findByUserId(user.id);
+
     const sub = { sub: user.id, email: user.email, roleId: user.role };
     const token = await this.jwtService.signAsync(sub);
     return {
@@ -38,6 +42,7 @@ export class LoginUseCase {
         email: user.email,
         roleId: user.role,
       },
+      ...(company ? { company: { id: company.id, name: company.name } } : {}),
       token,
     };
   }
