@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/modules/users/domain/repositories/user.repository';
 import { JwtService } from '@nestjs/jwt';
 import { AppError } from 'src/common/response/app.error';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class LoginUseCase {
@@ -19,9 +20,9 @@ export class LoginUseCase {
       });
     }
 
-    // Here you would typically compare the provided password with the stored hashed password
-    // For simplicity, we are just checking if they match directly
-    if (user.password !== password) {
+    // Compara a senha fornecida com a senha hasheada armazenada
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
       throw new AppError({
         message: 'Invalid credentials',
         statusCode: 401,

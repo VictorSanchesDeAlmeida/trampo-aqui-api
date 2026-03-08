@@ -2,6 +2,7 @@ import { AppError } from 'src/common/response/app.error';
 import { User } from '../../domain/entities/user.entity';
 import { UserRepository } from '../../domain/repositories/user.repository';
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -17,6 +18,11 @@ export class CreateUserUseCase {
           statusCode: 400,
         });
       }
+
+      // Hash da senha antes de criar o usuário
+      const saltRounds = 12;
+      const hashedPassword = await bcrypt.hash(user.password, saltRounds);
+      user.setPassword(hashedPassword);
 
       // Cria o usuário
       await this.userRepository.create(user);

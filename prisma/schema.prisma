@@ -14,7 +14,7 @@ model User {
   name      String      @db.VarChar(255)
   document  String      @unique @db.VarChar(255)
   birthDate DateTime    @db.Date
-  password  String      @db.VarChar(50)
+  password  String      @db.VarChar(255)
   createdAt DateTime    @default(now())
   roleId    Int         @db.Integer
   role      Roles       @relation(fields: [roleId], references: [id])
