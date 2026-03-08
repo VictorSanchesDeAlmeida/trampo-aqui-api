@@ -4,6 +4,7 @@ import { CreateCompanyDto } from '../dtos/create-company.dto';
 import { CreateCompanyMapper } from '../mappers/create-company.mapper';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { UserRole } from 'src/common/enums/user-role.enum';
+import { AppResponse } from 'src/common/response/app.response';
 
 @Controller('companies')
 export class CompanyController {
@@ -15,9 +16,10 @@ export class CompanyController {
     const newCompany = CreateCompanyMapper.toEntity(createCompanyDto);
     await this.createCompanyUseCase.execute(newCompany);
 
-    return {
+    return new AppResponse({
       message: 'Company created successfully',
       statusCode: 201,
-    };
+      data: null,
+    });
   }
 }

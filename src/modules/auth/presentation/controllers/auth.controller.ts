@@ -9,13 +9,14 @@ export class AuthController {
   constructor(private readonly loginUseCase: LoginUseCase) {}
 
   @Public()
-  @Post()
+  @Post('login')
   async login(@Body() data: LoginDto) {
     const { email, password } = data;
-    const token = await this.loginUseCase.execute(email, password);
+    const result = await this.loginUseCase.execute(email, password);
     return new AppResponse({
       message: 'Login successful',
-      data: { token },
+      statusCode: 200,
+      data: result,
     });
   }
 }

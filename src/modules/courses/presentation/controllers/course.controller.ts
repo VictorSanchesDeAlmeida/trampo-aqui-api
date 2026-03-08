@@ -12,6 +12,7 @@ import { Public } from 'src/common/decorator/is-public';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { UserRole } from 'src/common/enums/user-role.enum';
 import { AppError } from 'src/common/response/app.error';
+import { AppResponse } from 'src/common/response/app.response';
 
 @Controller('courses')
 export class CourseController {
@@ -28,10 +29,11 @@ export class CourseController {
     const newCourse = CreateCourseMapper.toEntity(createCourseDto);
     await this.createCourseUseCase.execute(newCourse);
 
-    return {
+    return new AppResponse({
       message: 'Course created successfully',
       statusCode: 201,
-    };
+      data: null,
+    });
   }
 
   @Public()
@@ -68,17 +70,19 @@ export class CourseController {
       companyId ? await this.courseRepository.countByCompanyId(companyId) :
       await this.courseRepository.countAll();
 
-    return {
+    return new AppResponse({
       message: 'Courses retrieved successfully',
       statusCode: 200,
-      data: courseResponses,
-      pagination: {
-        page: pageNumber,
-        limit: limitNumber,
-        total: totalCourses,
-        totalPages: totalCourses ? Math.ceil(totalCourses / limitNumber) : undefined,
+      data: {
+        items: courseResponses,
+        pagination: {
+          page: pageNumber,
+          limit: limitNumber,
+          total: totalCourses,
+          totalPages: totalCourses ? Math.ceil(totalCourses / limitNumber) : undefined,
+        },
       },
-    };
+    });
   }
 
   @Public()
@@ -102,11 +106,11 @@ export class CourseController {
       course.createdAt,
     );
 
-    return {
+    return new AppResponse({
       message: 'Course retrieved successfully',
       statusCode: 200,
       data: courseResponse,
-    };
+    });
   }
 
   @Put(':id')
@@ -130,10 +134,11 @@ export class CourseController {
     // Executar use case
     await this.updateCourseUseCase.execute(id, updatedCourse);
 
-    return {
+    return new AppResponse({
       message: 'Course updated successfully',
       statusCode: 200,
-    };
+      data: null,
+    });
   }
 
   @Delete(':id')
@@ -141,9 +146,10 @@ export class CourseController {
   async deleteCourse(@Param('id') id: string) {
     await this.deleteCourseUseCase.execute(id);
 
-    return {
+    return new AppResponse({
       message: 'Course deleted successfully',
       statusCode: 200,
-    };
+      data: null,
+    });
   }
 }

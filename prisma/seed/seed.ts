@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from 'generated/prisma/client';
+import * as bcrypt from 'bcryptjs';
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -12,9 +13,15 @@ const prisma = new PrismaClient({
 
 async function main() {
   await prisma.roles.createMany({
-    data: [{ name: 'Admin' }, { name: 'User' }, { name: 'Company' }],
-    skipDuplicates: true,
+    data: [
+      { id: 1, name: 'Admin' },
+      { id: 2, name: 'User' },
+      { id: 3, name: 'Company' },
+    ],
   });
+
+  const saltRounds = 12;
+  const hashedPassword = await bcrypt.hash('admin123', saltRounds);
 
   await prisma.user.createMany({
     data: [
@@ -23,11 +30,10 @@ async function main() {
         email: 'admin@admin.com',
         document: '12345678900',
         birthDate: new Date('1990-01-01'),
-        password: 'admin123',
+        password: hashedPassword,
         roleId: 1,
       },
     ],
-    skipDuplicates: true,
   });
 }
 

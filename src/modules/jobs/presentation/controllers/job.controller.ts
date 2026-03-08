@@ -8,6 +8,7 @@ import { Public } from 'src/common/decorator/is-public';
 import { Job } from '../../domain/entities/job.entity';
 import { Roles } from 'src/common/decorator/roles.decorator';
 import { UserRole } from 'src/common/enums/user-role.enum';
+import { AppResponse } from 'src/common/response/app.response';
 
 @Controller('jobs')
 export class JobController {
@@ -22,10 +23,11 @@ export class JobController {
     const newJob = CreateJobMapper.toEntity(createJobDto);
     await this.createJobUseCase.execute(newJob);
 
-    return {
+    return new AppResponse({
       message: 'Job created successfully',
       statusCode: 201,
-    };
+      data: null,
+    });
   }
 
   @Public()
@@ -68,16 +70,18 @@ export class JobController {
         ? await this.jobRepository.countByCompanyId(companyId)
         : await this.jobRepository.countAll();
 
-    return {
+    return new AppResponse({
       message: 'Jobs retrieved successfully',
       statusCode: 200,
-      data: jobResponses,
-      pagination: {
-        page: pageNumber,
-        limit: limitNumber,
-        total: totalJobs,
-        totalPages: totalJobs ? Math.ceil(totalJobs / limitNumber) : undefined,
+      data: {
+        items: jobResponses,
+        pagination: {
+          page: pageNumber,
+          limit: limitNumber,
+          total: totalJobs,
+          totalPages: totalJobs ? Math.ceil(totalJobs / limitNumber) : undefined,
+        },
       },
-    };
+    });
   }
 }
