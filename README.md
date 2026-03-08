@@ -122,7 +122,7 @@ npm run build
 npm run start:prod
 ```
 
-A API estará disponível em `http://localhost:3000`
+A API estará disponível em `http://localhost:3333/v1`
 
 ## 📊 Banco de Dados
 
@@ -702,7 +702,7 @@ Authorization: Bearer <jwt-token>
 
 ```bash
 # 1. Cadastrar usuário
-curl -X POST http://localhost:3000/users \\
+curl -X POST http://localhost:3000/v1/users \\
   -H "Content-Type: application/json" \\
   -d '{
     "name": "João Silva",
@@ -714,7 +714,7 @@ curl -X POST http://localhost:3000/users \\
   }'
 
 # 2. Fazer login
-curl -X POST http://localhost:3000/auth/login \\
+curl -X POST http://localhost:3000/v1/auth/login \\
   -H "Content-Type: application/json" \\
   -d '{
     "email": "joao@email.com",
@@ -722,7 +722,7 @@ curl -X POST http://localhost:3000/auth/login \\
   }'
 
 # 3. Criar empresa (usar token do passo 2)
-curl -X POST http://localhost:3000/companies \\
+curl -X POST http://localhost:3000/v1/companies \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer <jwt-token>" \\
   -d '{
@@ -809,8 +809,8 @@ docker-compose up
 ## 🔗 Links Úteis
 
 - **Prisma Studio**: `http://localhost:5555` (quando rodando)
-- **API Base**: `http://localhost:3000`
-- **Health Check**: `http://localhost:3000/health` (se implementado)
+- **API Base**: `http://localhost:3333/v1`
+- **Health Check**: `http://localhost:3333/v1/health` (se implementado)
 
 ---
 
