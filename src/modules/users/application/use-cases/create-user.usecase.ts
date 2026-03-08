@@ -8,7 +8,7 @@ import * as bcrypt from 'bcryptjs';
 export class CreateUserUseCase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  async execute(user: User): Promise<void> {
+  async execute(user: User) {
     try {
       // Verifica se o usuário já existe
       const existingUser = await this.userRepository.findByEmail(user.email);
@@ -25,7 +25,14 @@ export class CreateUserUseCase {
       user.setPassword(hashedPassword);
 
       // Cria o usuário
-      await this.userRepository.create(user);
+      const createdUser = await this.userRepository.create(user);
+
+      return {
+        id: createdUser.id,
+        name: createdUser.name,
+        email: createdUser.email,
+        role: createdUser.role,
+      };
     } catch (error) {
       // Re-throw AppError sem modificar
       if (error instanceof AppError) {

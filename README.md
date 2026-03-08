@@ -272,10 +272,10 @@ Autentica usuário e retorna token JWT.
   "statusCode": 200,
   "data": {
     "user": {
-        "id": "973cbc3a-1e9f-493f-aa61-a10ba233f9a9",
-        "email": "exemplo@exemplo.com",
-        "roleId": 2,
-      },
+      "id": "973cbc3a-1e9f-493f-aa61-a10ba233f9a9",
+      "email": "exemplo@exemplo.com",
+      "roleId": 2
+    },
     "token": "eyJhbGciOiJIUzI1NiIs..."
   }
 }
@@ -328,7 +328,12 @@ Cadastra novo usuário no sistema.
 {
   "message": "User created successfully",
   "statusCode": 201,
-  "data": null
+  "data": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "João Silva",
+    "email": "joao@email.com",
+    "roleId": 2
+  }
 }
 ```
 

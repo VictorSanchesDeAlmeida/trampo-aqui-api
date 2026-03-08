@@ -8,9 +8,9 @@ import { AppError } from 'src/common/response/app.error';
 export class PrismaUserRepository implements UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(user: User): Promise<void> {
+  async create(user: User): Promise<User> {
     try {
-      await this.prisma.user.create({
+      const createdUser = await this.prisma.user.create({
         data: {
           id: user.id,
           name: user.name,
@@ -22,6 +22,17 @@ export class PrismaUserRepository implements UserRepository {
           roleId: user.role,
         },
       });
+
+      return new User(
+        createdUser.id,
+        createdUser.name,
+        createdUser.email,
+        createdUser.document,
+        createdUser.birthDate,
+        createdUser.password,
+        createdUser.roleId,
+        createdUser.createdAt,
+      );
     } catch {
       throw new AppError({
         message: 'Failed to create user',

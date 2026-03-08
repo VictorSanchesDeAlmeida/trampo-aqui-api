@@ -13,12 +13,12 @@ export class UserController {
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
     const newUser = UserMapper.toEntity(createUserDto);
-    await this.createUserUseCase.execute(newUser);
+    const createdUser = await this.createUserUseCase.execute(newUser);
 
     return new AppResponse({
       message: 'User created successfully',
       statusCode: 201,
-      data: null,
+      data: createdUser,
     });
   }
 }
