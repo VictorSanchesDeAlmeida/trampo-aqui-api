@@ -5,6 +5,7 @@ import { UserModule } from './modules/users/user.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/infra/guard/auth.guard';
+import { CompaniesModule } from './modules/companies/companies.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AuthGuard } from './modules/auth/infra/guard/auth.guard';
     DatabaseModule,
     UserModule,
     AuthModule,
+    CompaniesModule,
   ],
   providers: [
     {
